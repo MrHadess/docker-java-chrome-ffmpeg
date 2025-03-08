@@ -22,7 +22,7 @@ jobs:
     - name: Save Docker image to tar file
       run: |
             docker save -o custom-java-chrome-ffmpeg.tar custom-java-chrome-ffmpeg
-            tar -czf custom-java-chrome-ffmpeg.tarr.gz custom-java-chrome-ffmpeg.tar
+            tar -czf custom-java-chrome-ffmpeg.tar.gz custom-java-chrome-ffmpeg.tar
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
