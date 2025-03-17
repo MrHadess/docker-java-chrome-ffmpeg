@@ -1,4 +1,3 @@
-# date 2025-03-17 22:40
 # Use OpenJDK as the base image
 FROM openjdk:17-jdk-slim
 
@@ -19,21 +18,23 @@ RUN apt-get update && \
     && apt-get update \
     && apt-get install -y google-chrome-stable \
     && apt-get install -y ffmpeg \
-    # Install ChromeDriver (MatchLatestStableChrome)
-    && CHROME_MAJOR_VERSION=$(google-chrome-stable --version | awk -F '[ .]' '{print $3}') \
-    && CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_MAJOR_VERSION") \
-    && echo "DownloadChromedriverVersion: $CHROMEDRIVER_VERSION" \
-    && wget -O /tmp/chromedriver.zip "https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip" \
-    && unzip /tmp/chromedriver.zip -d /usr/local/bin/ \
+    # 修复版本号提取逻辑
+    && CHROME_FULL_VERSION=$(google-chrome-stable --version | awk '{match($0,/[0-9]+\.[0-9]+\.[0-9]+/); print substr($0,RSTART,RLENGTH)}') \
+    && CHROME_MAJOR_VERSION=$(echo $CHROME_FULL_VERSION | cut -d'.' -f1) \
+    && CHROMEDRIVER_VERSION=$(curl -s "https://googlechromelabs.github.io/chrome-for-testing/latest-patch-versions-per-build.json" | grep -Po '"'"$CHROME_MAJOR_VERSION"'"\s*:\s*{\s*"version":\s*"\K[^"]+') \
+    && echo "正在下载Chromedriver版本: $CHROMEDRIVER_VERSION" \
+    && wget -O /tmp/chromedriver.zip "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/$CHROMEDRIVER_VERSION/linux64/chromedriver-linux64.zip" \
+    && unzip /tmp/chromedriver.zip -d /tmp/ \
+    && mv /tmp/chromedriver-linux64/chromedriver /usr/local/bin/ \
     && chmod +x /usr/local/bin/chromedriver \
-    # Config CH ENV
+    # 配置中文环境
     && sed -i 's/# zh_CN.UTF-8 UTF-8/zh_CN.UTF-8 UTF-8/' /etc/locale.gen \
     && locale-gen \
     && fc-cache -fv \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/chromedriver.zip
+    && rm -rf /var/lib/apt/lists/* /tmp/*
 
-# Setting Chinese ENV
+# 设置中文环境变量
 ENV LANG=zh_CN.UTF-8
 ENV LC_ALL=zh_CN.UTF-8
 
