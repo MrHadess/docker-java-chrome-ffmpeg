@@ -1,30 +1,38 @@
-name: Docker Image CI
+name: Build and Release Docker Image
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - 'v*'
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        platform: [linux/amd64, linux/arm64]
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
 
-    - name: Build Docker image
-      run: docker build -t custom-java-chrome-ffmpeg .
+      - name: Set up Buildx
+        uses: docker/setup-buildx-action@v3
 
-    - name: Save Docker image to tar file
-      run: |
-            docker save -o custom-java-chrome-ffmpeg.tar custom-java-chrome-ffmpeg
+      - name: Build Docker image
+        run: |
+          docker buildx build \
+          --platform ${{ matrix.platform }} \
+          -t myapp:${{ github.sha }} .
 
-    - name: Upload artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: custom-java-chrome-ffmpeg
-        path: custom-java-chrome-ffmpeg.tar
+      - name: Save image as .tar.gz
+        run: |
+          platform_suffix="${{ matrix.platform == 'linux/amd64' && 'amd64' || 'arm64' }}"
+          docker save myapp:${{ github.sha }} | gzip > myapp-${platform_suffix}.tar.gz
+
+      - name: Upload to Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: myapp-*.tar.gz
