@@ -2,7 +2,7 @@
 FROM openjdk:17-jdk-slim
 
 # Define environment variable (modify the target version number here)
-ENV CHROME_VERSION=116.0.5845.96
+ENV CHROME_VERSION=114.0.5735.90
 
 # Install Chrome, WebDriver, FFmpeg, and Chinese fonts
 RUN apt-get update && \
