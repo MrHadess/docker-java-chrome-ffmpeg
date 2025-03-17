@@ -8,6 +8,7 @@ RUN apt-get update && \
     wget \
     gnupg \
     ca-certificates \
+    curl \
     unzip \
     fontconfig \
     fonts-noto-cjk-extra \
