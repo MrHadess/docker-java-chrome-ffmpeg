@@ -20,8 +20,9 @@ RUN apt-get update && \
     && apt-get install -y google-chrome-stable \
     && apt-get install -y ffmpeg \
     # Install ChromeDriver (MatchLatestStableChrome)
-    && CHROME_VERSION=$(google-chrome-stable --version | awk '{print $3}') \
-    && CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION") \
+    && CHROME_MAJOR_VERSION=$(google-chrome-stable --version | awk -F '[ .]' '{print $3}') \
+    && CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_MAJOR_VERSION") \
+    && echo "DownloadChromedriverVersion: $CHROMEDRIVER_VERSION" \
     && wget -O /tmp/chromedriver.zip "https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip" \
     && unzip /tmp/chromedriver.zip -d /usr/local/bin/ \
     && chmod +x /usr/local/bin/chromedriver \
