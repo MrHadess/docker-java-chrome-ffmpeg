@@ -19,9 +19,9 @@ jobs:
     - name: Build Docker image
       run: docker build -t custom-java-chrome-ffmpeg .
 
-    - name: Save Docker image to tar file
-      run: |
-            docker save -o custom-java-chrome-ffmpeg.tar custom-java-chrome-ffmpeg
+    # - name: Save Docker image to tar file
+    #   run: |
+    #         docker save -o custom-java-chrome-ffmpeg.tar custom-java-chrome-ffmpeg
 
     # - name: Upload artifact
     #   uses: actions/upload-artifact@v4
@@ -38,4 +38,6 @@ jobs:
         # Password or personal access token used to log against the Docker registry
         password: ${{ secrets.ALIYUN_PASSWORD }}
 
-    - run: docker push crpi-lltnojaasd01wldz.cn-guangzhou.personal.cr.aliyuncs.com/mrhadess/docker-java-chrome-ffmpeg:latest
+    - run: |
+          docker tag docker-java-chrome-ffmpeg:latest crpi-lltnojaasd01wldz.cn-guangzhou.personal.cr.aliyuncs.com/mrhadess/docker-java-chrome-ffmpeg:latest
+          docker push crpi-lltnojaasd01wldz.cn-guangzhou.personal.cr.aliyuncs.com/mrhadess/docker-java-chrome-ffmpeg:latest
