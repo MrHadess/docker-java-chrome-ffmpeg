@@ -28,3 +28,11 @@ jobs:
       with:
         name: custom-java-chrome-ffmpeg
         path: custom-java-chrome-ffmpeg.tar
+
+    - name: Push to Aliyun ACR
+      uses: docker/login-action@v2
+      with:
+        registry: registry.cn-hangzhou.aliyuncs.com
+        username: ${{ secrets.ALIYUN_USER }}
+        password: ${{ secrets.ALIYUN_PASSWORD }}
+    - run: docker push crpi-lltnojaasd01wldz.cn-guangzhou.personal.cr.aliyuncs.com/test-space/custom-java-chrome-ffmpeg:latest
