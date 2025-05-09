@@ -38,4 +38,4 @@ jobs:
         # Password or personal access token used to log against the Docker registry
         password: ${{ secrets.ALIYUN_PASSWORD }}
 
-    - run: docker push crpi-lltnojaasd01wldz.cn-guangzhou.personal.cr.aliyuncs.com/test-space/custom-java-chrome-ffmpeg:latest
+    - run: docker push crpi-lltnojaasd01wldz.cn-guangzhou.personal.cr.aliyuncs.com/mrhadess/docker-java-chrome-ffmpeg:latest
