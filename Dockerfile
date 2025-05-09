@@ -21,6 +21,7 @@ RUN apt-get update && \
     && apt-get install -y ffmpeg \
     # 精确版本获取逻辑
     && wget -O /tmp/selenium-manager-linux "https://github.com/SeleniumHQ/selenium_manager_artifacts/releases/download/selenium-manager-b6df12e/selenium-manager-linux" \
+    && chmod 777 /tmp/selenium-manager-linux \
     && ./tmp/selenium-manager-linux --browser chrome \
     # 中文环境配置
     && sed -i 's/# zh_CN.UTF-8 UTF-8/zh_CN.UTF-8 UTF-8/' /etc/locale.gen \
