@@ -39,5 +39,5 @@ jobs:
         password: ${{ secrets.ALIYUN_PASSWORD }}
 
     - run: |
-          docker tag docker-java-chrome-ffmpeg:latest crpi-lltnojaasd01wldz.cn-guangzhou.personal.cr.aliyuncs.com/mrhadess/docker-java-chrome-ffmpeg:latest
+          docker tag custom-java-chrome-ffmpeg:latest crpi-lltnojaasd01wldz.cn-guangzhou.personal.cr.aliyuncs.com/mrhadess/docker-java-chrome-ffmpeg:latest
           docker push crpi-lltnojaasd01wldz.cn-guangzhou.personal.cr.aliyuncs.com/mrhadess/docker-java-chrome-ffmpeg:latest
