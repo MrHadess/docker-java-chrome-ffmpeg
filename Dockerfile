@@ -20,14 +20,8 @@ RUN apt-get update && \
     && apt-get install -y google-chrome-stable \
     && apt-get install -y ffmpeg \
     # 精确版本获取逻辑
-    && CHROME_VERSION=$(google-chrome-stable --version | awk -F '[ .]' '{print $3"."$4"."$5}') \
-    && CHROME_MAJOR=$(echo $CHROME_VERSION | cut -d'.' -f1) \
-    && CHROMEDRIVER_VERSION=$(curl -sS "https://googlechromelabs.github.io/chrome-for-testing/latest-versions-per-milestone-with-downloads.json" | jq -r ".milestones.\"$CHROME_MAJOR\".version") \
-    && echo "确认Chromedriver版本: $CHROMEDRIVER_VERSION" \
-    && wget -O /tmp/chromedriver.zip "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/${CHROMEDRIVER_VERSION}/linux64/chromedriver-linux64.zip" \
-    && unzip /tmp/chromedriver.zip -d /tmp/ \
-    && mv /tmp/chromedriver-linux64/chromedriver /usr/local/bin/ \
-    && chmod +x /usr/local/bin/chromedriver \
+    && wget -O /tmp/selenium-manager-linux "https://github.com/SeleniumHQ/selenium_manager_artifacts/releases/download/selenium-manager-b6df12e/selenium-manager-linux" \
+    && ./tmp/selenium-manager-linux --browser chrome \
     # 中文环境配置
     && sed -i 's/# zh_CN.UTF-8 UTF-8/zh_CN.UTF-8 UTF-8/' /etc/locale.gen \
     && locale-gen \
